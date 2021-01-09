@@ -19,18 +19,23 @@ namespace ft {
 
         explicit bidirectional_iterator_const(list_t <T> *ptr) : _ptr(ptr) {};
 
-        bidirectional_iterator_const(
-                const bidirectional_iterator_const &bidirectionalIteratorConst) { *this = bidirectionalIteratorConst; };
+        bidirectional_iterator_const(const bidirectional_iterator_const &bidirectionalIteratorConst) {
+            *this = bidirectionalIteratorConst;
+        };
+
+        bidirectional_iterator_const(const bidirectional_iterator &bidirectionalIterator) {
+            *this = bidirectionalIterator;
+        }
 
         bidirectional_iterator_const &operator=(bidirectional_iterator_const const &bidirectionalIteratorConst) {
             _ptr = bidirectionalIteratorConst._ptr;
             return (*this);
         };
 
-        bidirectional_iterator_const &operator=(const bidirectional_iterator &bidirectional_iterator) {
-            _ptr = bidirectional_iterator.getCell();
+        bidirectional_iterator_const &operator=(bidirectional_iterator const &bidirectionalIterator) {
+            _ptr = bidirectionalIterator.getCell();
             return (*this);
-        };
+        }
 
         virtual ~bidirectional_iterator_const() {};
 
@@ -52,11 +57,7 @@ namespace ft {
             return (_ptr != bidirectionalIteratorConst._ptr);
         };
 
-        T &operator*() { return *(_ptr->data); };
-
-        T *operator->() { return (_ptr->data); };
-
-        list_t <T> *getCell() { return (_ptr); }
+        const T &operator*() { return *(_ptr->data); };
     };
 }
 
