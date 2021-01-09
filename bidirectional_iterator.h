@@ -53,7 +53,7 @@ namespace ft {
 
         T *operator->() { return (_ptr->data); };
 
-        list_t<T> *getCell() { return (_ptr); }
+        list_t<T> *getCell() const { return (_ptr); }
     };
 }
 #endif
