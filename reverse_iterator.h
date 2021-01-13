@@ -5,46 +5,78 @@
 #ifndef FT_CONTAINERS_REVERSE_ITERATOR_H
 #define FT_CONTAINERS_REVERSE_ITERATOR_H
 
-namespace ft {
-    template<typename T>
-    class reverse_iterator {
-    private:
-        list_t <T> *_ptr;
-    public:
-        explicit reverse_iterator() : _ptr(nullptr) {}
+#include "bidirectional_iterator.h"
+namespace ft
+{
+	template<typename T>
+	class reverse_iterator
+	{
+	private:
+		list_t<T> *_ptr;
+	public:
+		typedef typename std::allocator<T>::reference reference;
+		typedef typename std::allocator<T>::pointer pointer;
 
-        explicit reverse_iterator(list_t <T> *ptr) : _ptr(ptr) {}
+		explicit reverse_iterator() : _ptr(nullptr)
+		{}
 
-        reverse_iterator(reverse_iterator const &reverseIterator) {
-            *this = reverseIterator;
-        }
+		explicit reverse_iterator(list_t<T> *ptr) : _ptr(ptr)
+		{}
 
-        reverse_iterator &operator=(reverse_iterator const &reverseIterator) {
-            _ptr = reverseIterator._ptr;
-            return (*this);
-        }
+		reverse_iterator(reverse_iterator const &reverseIterator) : _ptr(reverseIterator._ptr)
+		{}
 
-        reverse_iterator &operator++() {
-            _ptr = _ptr->prev;
-            return (*this);
-        }
+		virtual ~reverse_iterator()
+		{}
 
-        reverse_iterator &operator--() {
-            _ptr = _ptr->next;
-            return (*this);
-        }
+		reverse_iterator &operator=(reverse_iterator const &reverseIterator)
+		{
+			_ptr = reverseIterator._ptr;
+			return (*this);
+		}
 
-        bool &operator==(reverse_iterator const &reverseIterator) { return (_ptr == reverseIterator._ptr); }
+		reverse_iterator &operator++()
+		{
+			_ptr = _ptr->prev;
+			return (*this);
+		}
 
-        bool &operator!=(reverse_iterator const &reverseIterator) { return (_ptr != reverseIterator._ptr); }
+		const reverse_iterator operator++(int)
+		{
+			reverse_iterator it(_ptr);
+			_ptr = _ptr->prev;
+			return (it);
+		}
 
-        T &operator*() { return (*_ptr->data); }
+		reverse_iterator &operator--()
+		{
+			_ptr = _ptr->next;
+			return (*this);
+		}
 
-        T *operator->() { return (_ptr->data); }
+		reverse_iterator operator--(int)
+		{
+			reverse_iterator it(_ptr);
+			_ptr = _ptr->next;
+			return (it);
+		}
 
-        list_t <T> *getCell() const {
-            return (_ptr);
-        }
-    };
+		bool operator==(reverse_iterator const &reverseIterator)
+		{ return (_ptr == reverseIterator._ptr); }
+
+		bool operator!=(reverse_iterator const &reverseIterator)
+		{ return (_ptr != reverseIterator._ptr); }
+
+		reference operator*() const
+		{ return (*_ptr->data); }
+
+		pointer operator->() const
+		{ return (_ptr->data); }
+
+		list_t<T> *getCell() const
+		{
+			return (_ptr);
+		}
+	};
 }
-#endif //FT_CONTAINERS_REVERSE_ITERATOR_H
+#endif
