@@ -5,61 +5,94 @@
 #ifndef FT_CONTAINERS_CONST_BIDIRECTIONAL_ITERATOR_H
 #define FT_CONTAINERS_CONST_BIDIRECTIONAL_ITERATOR_H
 
+#include "bidirectional_iterator.h"
 
-namespace ft {
+namespace ft
+{
+	template<class T>
+	class const_bidirectional_iterator
+	{
+	private:
+		list_t<T> *_ptr;
+	public:
+		typedef typename std::allocator<T>::reference reference;
+		typedef typename std::allocator<T>::pointer pointer;
 
-    template<typename T>
-    class const_bidirectional_iterator {
-    private:
-        list_t <T> *_ptr;
-    public:
-        typedef ft::bidirectional_iterator<T> bidirectional_iterator;
+		explicit const_bidirectional_iterator() : _ptr(nullptr)
+		{};
 
-        explicit const_bidirectional_iterator(void) : _ptr(nullptr) {};
+		explicit const_bidirectional_iterator(list_t<T> *ptr) : _ptr(ptr)
+		{};
 
-        explicit const_bidirectional_iterator(list_t <T> *ptr) : _ptr(ptr) {};
+		const_bidirectional_iterator(const_bidirectional_iterator const &constBidirectionalIterator) :
+				_ptr(constBidirectionalIterator._ptr)
+		{}
 
-        const_bidirectional_iterator(const const_bidirectional_iterator &constBidirectionalIterator) {
-            *this = constBidirectionalIterator;
-        };
+		explicit const_bidirectional_iterator(bidirectional_iterator<T> const &bidirectionalIterator) :
+				_ptr(bidirectionalIterator._ptr)
+		{}
 
-        const_bidirectional_iterator(const bidirectional_iterator &bidirectionalIterator) {
-            *this = bidirectionalIterator;
-        }
+		virtual ~const_bidirectional_iterator()
+		{}
 
-        const_bidirectional_iterator &operator=(const_bidirectional_iterator const &constBidirectionalIterator) {
-            _ptr = constBidirectionalIterator._ptr;
-            return (*this);
-        };
+		const_bidirectional_iterator &operator=(const_bidirectional_iterator const &constBidirectionalIterator)
+		{
+			_ptr = constBidirectionalIterator._ptr;
+			return (*this);
+		}
 
-        const_bidirectional_iterator &operator=(bidirectional_iterator const &bidirectionalIterator) {
-            _ptr = bidirectionalIterator.getCell();
-            return (*this);
-        }
+		const_bidirectional_iterator &operator=(bidirectional_iterator<T> const &bidirectionalIterator)
+		{
+			_ptr = bidirectionalIterator.getCell();
+			return (*this);
+		}
 
-        virtual ~const_bidirectional_iterator() {};
+		const_bidirectional_iterator &operator++()
+		{
+			_ptr = _ptr->next;
+			return (*this);
+		}
 
-        const_bidirectional_iterator &operator++() {
-            _ptr++;
-            return (*this);
-        }
+		const const_bidirectional_iterator operator++(int)
+		{
+			const_bidirectional_iterator it(_ptr);
+			_ptr = _ptr->next;
+			return (it);
+		}
 
-        const_bidirectional_iterator &operator--() {
-            _ptr--;
-            return (*this);
-        }
+		const_bidirectional_iterator &operator--()
+		{
+			_ptr = _ptr->prev;
+			return (*this);
+		}
 
-        bool operator==(const_bidirectional_iterator const &constBidirectionalIterator) {
-            return (_ptr == constBidirectionalIterator._ptr);
-        };
+		const const_bidirectional_iterator operator--(int)
+		{
+			const_bidirectional_iterator it(_ptr);
+			_ptr = _ptr->prev;
+			return (it);
+		}
 
-        bool operator!=(const_bidirectional_iterator const &constBidirectionalIterator) {
-            return (_ptr != constBidirectionalIterator._ptr);
-        };
+		bool operator==(const_bidirectional_iterator const &constBidirectionalIterator)
+		{
+			return (_ptr == constBidirectionalIterator._ptr);
+		}
 
-        const T &operator*() { return *(_ptr->data); };
-    };
+		bool operator!=(const_bidirectional_iterator const &constBidirectionalIterator)
+		{
+			return (_ptr != constBidirectionalIterator._ptr);
+		}
+
+		reference operator*() const
+		{
+			return (*_ptr->data);
+		}
+
+		pointer operator->() const
+		{
+			return (_ptr->data);
+		}
+	};
 }
-
 
 #endif
