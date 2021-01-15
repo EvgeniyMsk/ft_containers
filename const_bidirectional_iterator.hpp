@@ -28,8 +28,8 @@ namespace ft
 				_ptr(constBidirectionalIterator._ptr)
 		{}
 
-		explicit const_bidirectional_iterator(bidirectional_iterator<T> const &bidirectionalIterator) :
-				_ptr(bidirectionalIterator._ptr)
+		const_bidirectional_iterator(bidirectional_iterator<T> const &bidirectionalIterator) :
+				_ptr(bidirectionalIterator.getCell())
 		{}
 
 		virtual ~const_bidirectional_iterator()

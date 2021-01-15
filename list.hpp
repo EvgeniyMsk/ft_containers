@@ -20,7 +20,7 @@ namespace ft
 
 	class list
 	{
-	private:
+	public:
 		typedef T value_type;
 		typedef Alloc allocator_type;
 		typedef typename allocator_type::reference reference;
@@ -33,14 +33,13 @@ namespace ft
 		typedef const_reverse_iterator<T> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
 		typedef std::size_t size_type;
-
+	private:
 		list_t<value_type> *_front;
 		list_t<value_type> *_back;
 		list_t<value_type> *_end;
 		size_type _length;
 		allocator_type _alloc;
 		std::allocator<list_t<T> > _cellAlloc;
-
 	public:
 		//  Member functions
 		//  Empty container constructor (default constructor). Constructs an empty container, with no elements.
@@ -172,7 +171,7 @@ namespace ft
 
 		void assign(size_type n, const value_type &val)
 		{
-			this->clear();
+			clear();
 			while (n--)
 				push_back(val);
 		}
@@ -202,7 +201,7 @@ namespace ft
 				_front = tmp;
 				_front->prev = _end;
 			}
-			this->_length--;
+			_length--;
 		}
 
 		void push_back(const value_type &val)
@@ -231,7 +230,7 @@ namespace ft
 				_back->next = _end;
 				_end->prev = _back;
 			}
-			this->_length--;
+			_length--;
 		}
 
 		iterator insert(iterator position, const value_type &val)
@@ -252,13 +251,127 @@ namespace ft
 			return (iterator(tmp));
 		}
 
-
-		void clear(void)
+		void insert(iterator position, size_type n, const value_type &val)
 		{
-			while (this->_length)
-				pop_back();
+			while (n--)
+				insert(position, val);
 		}
 
+		template<class InputIterator>
+		void insert(iterator position, InputIterator first, InputIterator last)
+		{
+			for (InputIterator it = first; it != last; it++)
+				insert(position, *it);
+		}
+
+		iterator erase(iterator position)
+		{
+			list_t<T> *it = position.getCell();
+			list_t<T> *next = it->next;
+			list_t<T> *prev = it->prev;
+			if (it == _end)
+				return (iterator(this->_end));
+			next->prev = prev;
+			prev->next = next;
+			_alloc.destroy(it->data);
+			_alloc.deallocate(it->data, 1);
+			_cellAlloc.destroy(it);
+			_cellAlloc.deallocate(it, 1);
+			if (prev == _end)
+				_front = next;
+			if (next == _end)
+				_back = prev;
+			_length--;
+			return (iterator(next));
+		}
+
+		iterator erase(iterator first, iterator last)
+		{
+			if (first == last)
+				return last;
+			while (first != last)
+				first = this->erase(first);
+			this->erase(first);
+			if (last.getNode() == _end)
+				return (iterator(_end));
+			last++;
+			return (iterator(last.getCell()));
+		}
+
+		void swap(list &x)
+		{
+			list temp(*this);
+			*this = x;
+			x = temp;
+			delete (temp);
+		}
+
+		void resize(size_type n, value_type val = value_type())
+		{
+			int tmp = (int) n;
+			if (tmp < 0)
+				return;
+			if (tmp < _length)
+				while (tmp < _length)
+					erase(begin());
+			if (tmp > _length)
+				while (tmp > _length)
+					push_back(val);
+		}
+
+		void clear()
+		{
+			while (_front != _end)
+				erase(begin());
+		}
+
+		//	Operations:
+		void splice (iterator position, list& x)
+		{
+			for (iterator it = x.begin(); it != x.end(); it++)
+				insert(position, *it);
+			x.clear();
+		}
+
+		void splice (iterator position, list& x, iterator i)
+		{
+			for (iterator it = i; i != x.end(); it++)
+				insert(position, *it);
+			for (iterator it = i; i != x.end();)
+				it = x.erase(it);
+		}
+
+		void splice (iterator position, list& x, iterator first, iterator last)
+		{
+			for (iterator it = first; it != last; it++)
+				insert(position, *it);
+			for (iterator it = first; it != last;)
+				it = x.erase(it);
+		}
+
+		void remove (const value_type& val)
+		{
+			for (iterator it = begin(); it != end();)
+				if (val == *it)
+					erase(it);
+				else
+					it++;
+		}
+
+		template <class Predicate>
+		void remove_if (Predicate pred)
+		{
+			for (iterator it = begin(); it != end();)
+				if (pred(*it))
+					erase(it);
+				else
+					it++;
+		}
+
+		void unique()
+		{
+
+		}
 
 	};
 }

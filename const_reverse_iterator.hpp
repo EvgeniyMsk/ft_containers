@@ -27,7 +27,7 @@ namespace ft
 		const_reverse_iterator(const_reverse_iterator const &constReverseIterator) : _ptr(constReverseIterator._ptr)
 		{}
 
-		const_reverse_iterator(reverse_iterator<T> const &reverseIterator) : _ptr(reverseIterator._ptr)
+		const_reverse_iterator(reverse_iterator<T> const &reverseIterator) : _ptr(reverseIterator.getCell())
 		{}
 
 		virtual ~const_reverse_iterator()
