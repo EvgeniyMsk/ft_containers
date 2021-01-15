@@ -2,10 +2,10 @@
 // Created by Qsymond on 2021-01-09.
 //
 
-#ifndef FT_CONTAINERS_REVERSE_ITERATOR_H
-#define FT_CONTAINERS_REVERSE_ITERATOR_H
+#ifndef FT_CONTAINERS_REVERSE_ITERATOR_HPP
+#define FT_CONTAINERS_REVERSE_ITERATOR_HPP
 
-#include "bidirectional_iterator.h"
+#include "bidirectional_iterator.hpp"
 namespace ft
 {
 	template<typename T>

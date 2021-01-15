@@ -2,13 +2,13 @@
 // Created by Qsymond on 2021-01-09.
 //
 
-#ifndef FT_CONTAINERS_LIST_H
-#define FT_CONTAINERS_LIST_H
+#ifndef FT_CONTAINERS_LIST_HPP
+#define FT_CONTAINERS_LIST_HPP
 
-#include "bidirectional_iterator.h"
-#include "const_bidirectional_iterator.h"
-#include "reverse_iterator.h"
-#include "const_reverse_iterator.h"
+#include "bidirectional_iterator.hpp"
+#include "const_bidirectional_iterator.hpp"
+#include "reverse_iterator.hpp"
+#include "const_reverse_iterator.hpp"
 #include <limits>
 
     // Реализация двусвязного списка (в соответствии со стандартом C++98)
@@ -263,4 +263,4 @@ namespace ft
 	};
 }
 
-#endif //FT_CONTAINERS_LIST_H
+#endif //FT_CONTAINERS_LIST_HPP

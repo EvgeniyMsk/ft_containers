@@ -2,10 +2,10 @@
 // Created by Qsymond on 2021-01-09.
 //
 
-#ifndef FT_CONTAINERS_CONST_REVERSE_ITERATOR_H
-#define FT_CONTAINERS_CONST_REVERSE_ITERATOR_H
+#ifndef FT_CONTAINERS_CONST_REVERSE_ITERATOR_HPP
+#define FT_CONTAINERS_CONST_REVERSE_ITERATOR_HPP
 
-#include "reverse_iterator.h"
+#include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -92,4 +92,4 @@ namespace ft
 		}
 	};
 }
-#endif //FT_CONTAINERS_CONST_REVERSE_ITERATOR_H
+#endif //FT_CONTAINERS_CONST_REVERSE_ITERATOR_HPP
