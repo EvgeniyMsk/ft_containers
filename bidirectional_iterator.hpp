@@ -10,7 +10,7 @@ namespace ft
 	{
 		T *data;
 		struct list_t *next;
-		struct list_t *prev;
+		struct list_t *previous;
 	};
 
 	template<class T>
@@ -55,14 +55,14 @@ namespace ft
 
 		bidirectional_iterator &operator--()
 		{
-			_ptr = _ptr->prev;
+			_ptr = _ptr->previous;
 			return (*this);
 		}
 
 		const bidirectional_iterator operator--(int)
 		{
 			bidirectional_iterator it(_ptr);
-			_ptr = _ptr->next;
+			_ptr = _ptr->previous;
 			return (it);
 		}
 

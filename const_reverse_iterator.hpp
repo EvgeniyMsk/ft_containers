@@ -47,14 +47,14 @@ namespace ft
 
 		const_reverse_iterator &operator++()
 		{
-			_ptr = _ptr->prev;
+			_ptr = _ptr->previous;
 			return (*this);
 		}
 
 		const const_reverse_iterator operator++(int)
 		{
 			const_reverse_iterator it(_ptr);
-			_ptr = _ptr->prev;
+			_ptr = _ptr->previous;
 			return (it);
 		}
 

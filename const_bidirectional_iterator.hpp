@@ -62,14 +62,14 @@ namespace ft
 
 		const_bidirectional_iterator &operator--()
 		{
-			_ptr = _ptr->prev;
+			_ptr = _ptr->previous;
 			return (*this);
 		}
 
 		const const_bidirectional_iterator operator--(int)
 		{
 			const_bidirectional_iterator it(_ptr);
-			_ptr = _ptr->prev;
+			_ptr = _ptr->previous;
 			return (it);
 		}
 
