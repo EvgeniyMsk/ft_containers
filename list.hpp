@@ -10,8 +10,6 @@
 #include "reverse_iterator.hpp"
 #include "const_reverse_iterator.hpp"
 #include <limits>
-#include <iterator>
-
 // Реализация двусвязного списка (в соответствии со стандартом C++98)
     // http://www.cplusplus.com/reference/list/list/list/
 using namespace ft;
@@ -113,6 +111,15 @@ namespace ft
 			_cellAlloc.deallocate(_end, 1);
 		}
 
+		list &operator=(const list &x) {
+			this->clear();
+			if (x.empty())
+				return (*this);
+			for (const_iterator it = x.begin(); it != x.end(); it++)
+				this->push_back(*it);
+			return (*this);
+		}
+
 		//  Iterators:
 		//	Return iterator to beginning
 		iterator begin()
@@ -149,7 +156,7 @@ namespace ft
 		//  Capacity:
 		//	Test whether container is empty
 		bool empty() const
-		{ return (_length > 0); }
+		{ return _length == 0; }
 
 		//	Return size
 		size_type size() const
