@@ -10,13 +10,18 @@
 #include "reverse_iterator.hpp"
 #include "const_reverse_iterator.hpp"
 #include <limits>
+
+
 // Реализация двусвязного списка (в соответствии со стандартом C++98)
     // http://www.cplusplus.com/reference/list/list/list/
 using namespace ft;
 namespace ft
 {
+	template<bool B, class T = void>
+	struct enable_if {};
+	template<class T>
+	struct enable_if<true, T> {typedef T type;};
 	template<typename T, class Alloc = std::allocator<T> >
-
 	class list
 	{
 	public:
@@ -54,7 +59,19 @@ namespace ft
 		}
 
 		//  fill constructor. Constructs a container with n elements. Each element is a copy of val.
-		explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type())
+		explicit list(const Alloc &alloc) : _length(0)
+		{
+			_end = _cellAlloc.allocate(1);
+			_cellAlloc.construct(_end);
+			_end->data = new T();
+			_end->previous = _end;
+			_end->next = _end;
+			_front = _end;
+			_back = _end;
+			_alloc = alloc;
+		}
+
+		explicit list(size_type count, const T &value = T(), const Alloc &alloc = Alloc())
 		{
 			_end = _cellAlloc.allocate(1);
 			_cellAlloc.construct(_end);
@@ -65,14 +82,15 @@ namespace ft
 			_front = _end;
 			_back = _end;
 			_length = 0;
-			while (n--)
-				push_back(val);
+			while (count--)
+				push_back(value);
 		}
 
 		//  range constructor. Constructs a container with as many elements as the range [first,last), with each element
 		//  constructed from its corresponding element in that range, in the same order.
 		template<class InputIterator>
-		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
+		list(InputIterator first, typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last,
+			 const Alloc &alloc = Alloc())
 		{
 			_end = _cellAlloc.allocate(1);
 			_cellAlloc.construct(_end);
@@ -111,12 +129,13 @@ namespace ft
 			_cellAlloc.deallocate(_end, 1);
 		}
 
-		list &operator=(const list &x) {
-			this->clear();
+		list &operator=(const list &x)
+		{
+			clear();
 			if (x.empty())
 				return (*this);
 			for (const_iterator it = x.begin(); it != x.end(); it++)
-				this->push_back(*it);
+				push_back(*it);
 			return (*this);
 		}
 
@@ -185,8 +204,9 @@ namespace ft
 
 		//  Modifiers:
 		template<class InputIterator>
+
 		//	Assign new content to container
-		void assign(InputIterator first, InputIterator last)
+		void assign(InputIterator first, typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last)
 		{
 			clear();
 			while (first != last)
@@ -294,7 +314,8 @@ namespace ft
 
 		//	Insert elements
 		template<class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last)
+		void insert(iterator position, InputIterator first,
+					typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last)
 		{
 			for (InputIterator it = first; it != last; it++)
 				insert(position, *it);
@@ -328,8 +349,8 @@ namespace ft
 			if (first == last)
 				return last;
 			while (first != last)
-				first = this->erase(first);
-			this->erase(first);
+				first = erase(first);
+			erase(first);
 			if (last.getCell() == _end)
 				return (iterator(_end));
 			last++;
@@ -342,25 +363,21 @@ namespace ft
 			list_t<T> *temp;
 			size_type length;
 			allocator_type allocator;
-			temp = x._back;
-			x._back = _back;
-			_back = temp;
-
-			temp = x._front;
-			x._front = _front;
-			_front = temp;
-
-			temp = x._end;
-			x._end = _end;
-			_end = temp;
-
-			length = x._length;
-			x._length = _length;
-			_length = length;
-
 			allocator = x._alloc;
 			x._alloc = _alloc;
 			_alloc = allocator;
+			length = x._length;
+			x._length = _length;
+			_length = length;
+			temp = x._back;
+			x._back = _back;
+			_back = temp;
+			temp = x._front;
+			x._front = _front;
+			_front = temp;
+			temp = x._end;
+			x._end = _end;
+			_end = temp;
 		}
 
 		//	Change size
@@ -370,8 +387,11 @@ namespace ft
 			if (temp < 0)
 				return;
 			if (temp < _length)
+			{
 				while (temp < _length)
-					erase(begin());
+					pop_back();
+				return;
+			}
 			if (temp > _length)
 				while (temp > _length)
 					push_back(val);
@@ -385,26 +405,54 @@ namespace ft
 		}
 
 		//	Operations:
+		//	The first version (1) transfers all the elements of x into the container.
 		void splice(iterator position, list &x)
 		{
-			for (iterator it = x.begin(); it != x.end(); it++)
-				insert(position, *it);
-			x.clear();
+			splice(position, x, x.begin(), x.end());
 		}
 
-		//	Transfer elements from list to list
+		//	The second version (2) transfers only the element pointed by i from x into the container.
 		void splice(iterator position, list &x, iterator i)
 		{
-			insert(position, *i);
+			if (i.getCell() == x._end)
+				return;
+			i.getCell()->previous->next = i.getCell()->next;
+			i.getCell()->next->previous = i.getCell()->previous;
+			x._front = x._end->next;
+			x._back = x._end->previous;
+			position.getCell()->previous->next = i.getCell();
+			i.getCell()->previous = position.getCell()->previous;
+			position.getCell()->previous = i.getCell();
+			i.getCell()->next = position.getCell();
+			_front = _end->next;
+			_back = _end->previous;
+			x._length--;
+			_length++;
 		}
 
-		//	Transfer elements from list to list
+		//	The third version (3) transfers the range [first,last) from x into the container.
 		void splice(iterator position, list &x, iterator first, iterator last)
 		{
-			for (iterator it = first; it != last; it++)
-				insert(position, *it);
-			for (iterator it = first; it != last;)
-				it = x.erase(it);
+			if (first.getCell() == x._end)
+				return;
+			if (last.getCell() == x._end)
+				last--;
+			first.getCell()->previous->next = last.getCell()->next;
+			last.getCell()->next->previous = first.getCell()->previous;
+			x._front = x._end->next;
+			x._back = x._end->previous;
+			position.getCell()->previous->next = first.getCell();
+			first.getCell()->previous = position.getCell()->previous;
+			position.getCell()->previous = last.getCell();
+			last.getCell()->next = position.getCell();
+			_front = _end->next;
+			_back = _end->previous;
+			_length = 0;
+			for (iterator beg = begin(); beg != end(); beg++)
+				_length++;
+			x._length = 0;
+			for (iterator it = x.begin(); it != x.end(); it++)
+				x._length++;
 		}
 
 		//	Remove elements with specific value
@@ -457,7 +505,7 @@ namespace ft
 
 			while (++current != end)
 			{
-				if (p(*begin, *current))
+				if (binary_pred(*begin, *current))
 				{
 					erase(current);
 					current = begin;
@@ -472,11 +520,10 @@ namespace ft
 			iterator begin = this->begin();
 			iterator end = this->end();
 			iterator beginX = x.begin();
-			iterator endX = x.end();
 			iterator next;
 			while (x._length)
 			{
-				if (*beginX < *begin || begin == endX)
+				if (*beginX < *begin || begin == end)
 				{
 					next = beginX;
 					next++;
@@ -488,22 +535,20 @@ namespace ft
 		}
 
 		template<class Compare>
-		//	Merge sorted lists
 		void merge(list &x, Compare comp)
 		{
 			iterator begin = this->begin();
 			iterator end = this->end();
-			iterator beginComp = comp.begin();
-			iterator endComp = comp.end();
+			iterator beginX = x.begin();
 			iterator next;
-			while (comp._length)
+			while (x._length)
 			{
-				if (comp(*beginComp, *begin) || begin == endComp)
+				if (comp(*beginX, *begin) || begin == end)
 				{
-					next = beginComp;
+					next = beginX;
 					next++;
-					splice(begin, comp, beginComp);
-					beginComp = next;
+					splice(begin, x, beginX);
+					beginX = next;
 				} else
 					begin++;
 			}
@@ -512,7 +557,6 @@ namespace ft
 		//	Sort elements in container
 		void sort()
 		{
-
 			iterator begin = this->begin();
 			iterator it = this->begin();
 			iterator end = this->end();
@@ -536,7 +580,6 @@ namespace ft
 		//	Sort elements in container
 		void sort(Compare comp)
 		{
-
 			iterator begin = this->begin();
 			iterator beginComp = this->begin();
 			iterator end = this->end();
@@ -561,9 +604,7 @@ namespace ft
 			iterator first = this->begin();
 			iterator last = this->end();
 			while ((first != last) && (first != --last))
-			{
 				std::swap(*first++, *last);
-			}
 		}
 	};
 
