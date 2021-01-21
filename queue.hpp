@@ -14,21 +14,21 @@ namespace ft
 		typedef typename Container::size_type size_type;
 	private:
 		container_type defaultClass;
-		size_type _length;
+		size_type length;
 	public:
 		//	Construct queue
-		explicit queue(const container_type &ctnr = container_type()) : defaultClass(ctnr), _length(0)
+		explicit queue(const container_type &ctnr = container_type()) : defaultClass(ctnr), length(0)
 		{}
 
 		//	Construct queue
-		queue(const queue &x) : _length(0)
+		queue(const queue &x) : length(0)
 		{ *this = x; }
 
 		//	Assignation
 		queue &operator=(const queue &other)
 		{
 			defaultClass = other.defaultClass;
-			_length = other._length;
+			length = other._length;
 			return (*this);
 		}
 
@@ -39,11 +39,11 @@ namespace ft
 		//	Member functions
 		//	Test whether container is empty
 		bool empty() const
-		{ return (_length == 0); }
+		{ return (length == 0); }
 
 		//	Return size
 		size_type size() const
-		{ return (_length); }
+		{ return (length); }
 
 		//	Access next element
 		value_type &front()
@@ -64,15 +64,15 @@ namespace ft
 		//	Insert element
 		void push(const value_type &val)
 		{
-			_length++;
+			length++;
 			return (defaultClass.push_back(val));
 		}
 
 		//	Remove next element
 		void pop()
 		{
-			if (_length)
-				_length--;
+			if (length)
+				length--;
 			return (defaultClass.pop_front());
 		}
 
