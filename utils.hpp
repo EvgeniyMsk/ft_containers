@@ -1,9 +1,5 @@
-//
-// Created by Qsymond on 2021-01-21.
-//
-
-#ifndef FT_CONTAINERS_UTILS_HPP
-#define FT_CONTAINERS_UTILS_HPP
+#ifndef FT_UTILS_HPP
+#define FT_UTILS_HPP
 
 #include <memory>
 #include <iostream>
@@ -778,4 +774,4 @@ namespace ft
 	};
 }
 
-#endif //FT_CONTAINERS_UTILS_HPP
+#endif

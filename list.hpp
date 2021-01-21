@@ -1,17 +1,9 @@
-//
-// Created by Qsymond on 2021-01-09.
-//
-
-#ifndef FT_CONTAINERS_LIST_HPP
-#define FT_CONTAINERS_LIST_HPP
-
+#ifndef FT_LIST_HPP
+#define FT_LIST_HPP
 #include "utils.hpp"
 #include <limits>
-
-
 // Реализация двусвязного списка (в соответствии со стандартом C++98)
-    // http://www.cplusplus.com/reference/list/list/list/
-using namespace ft;
+// http://www.cplusplus.com/reference/list/list/list/
 namespace ft
 {
 	template<typename T, class Alloc = std::allocator<T> >
@@ -666,5 +658,4 @@ namespace ft
 		return ((lhs > rhs) || (lhs == rhs));
 	}
 }
-
-#endif //FT_CONTAINERS_LIST_HPP
+#endif

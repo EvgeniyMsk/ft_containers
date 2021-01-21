@@ -1,8 +1,6 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
-
 #include "list.hpp"
-
 // Реализация очереди (в соответствии со стандартом C++98)
 // http://www.cplusplus.com/reference/queue/
 namespace ft
@@ -18,12 +16,15 @@ namespace ft
 		container_type defaultClass;
 		size_type _length;
 	public:
+		//	Construct queue
 		explicit queue(const container_type &ctnr = container_type()) : defaultClass(ctnr), _length(0)
 		{}
 
+		//	Construct queue
 		queue(const queue &x) : _length(0)
 		{ *this = x; }
 
+		//	Assignation
 		queue &operator=(const queue &other)
 		{
 			defaultClass = other.defaultClass;
@@ -31,35 +32,43 @@ namespace ft
 			return (*this);
 		}
 
+		//	Destructor
 		virtual ~queue()
 		{}
 
-		/* Member functions */
-
+		//	Member functions
+		//	Test whether container is empty
 		bool empty() const
 		{ return (_length == 0); }
 
+		//	Return size
 		size_type size() const
 		{ return (_length); }
 
+		//	Access next element
 		value_type &front()
 		{ return (defaultClass.front()); }
 
+		//	Access next element
 		const value_type &front() const
 		{ return (defaultClass.front()); }
 
+		//	Access last element
 		value_type &back()
 		{ return (defaultClass.back()); }
 
+		//	Access last element
 		const value_type &back() const
 		{ return (defaultClass.back()); }
 
+		//	Insert element
 		void push(const value_type &val)
 		{
 			_length++;
 			return (defaultClass.push_back(val));
 		}
 
+		//	Remove next element
 		void pop()
 		{
 			if (_length)
@@ -70,6 +79,7 @@ namespace ft
 	};
 }
 
+//	Non-member function overloads
 template <class T, class Container>
 bool operator==(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
 {
