@@ -140,7 +140,7 @@ namespace ft
 
 		//	Return maximum size
 		size_type max_size() const
-		{ return std::numeric_limits<size_type>::max(); }
+		{ return (std::numeric_limits<size_type>::max() / (sizeof(value_type)));}
 
 		//	Change size
 		void resize(size_type n, value_type val = value_type())
@@ -162,7 +162,7 @@ namespace ft
 
 		//	Test whether vector is empty
 		bool empty() const
-		{ return !length ? 1 : 0; }
+		{ return (!length); }
 
 		//	Request a change in capacity
 		void reserve(size_type n)

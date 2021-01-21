@@ -1,99 +1,61 @@
 #ifndef STACK_HPP
 #define STACK_HPP
-#include "list.hpp"
+#include "vector.hpp"
 
 // Реализация стека (в соответствии со стандартом C++98)
 // http://www.cplusplus.com/reference/stack/stack/
 namespace ft
 {
-	template<class T, class Container = ft::list<T> >
+	template<class T, class Container = vector<T> >
 	class stack
 	{
 	public:
+		typedef T value_type;
 		typedef Container container_type;
-		typedef typename Container::value_type value_type;
-		typedef typename Container::size_type size_type;
-	protected:
-		container_type defaultClass;
-		size_type length;
-	public:
-		explicit stack(const container_type &ctnr = container_type()) : defaultClass(ctnr), length(0)
-		{}
+		typedef size_t size_type;
+		container_type container;
 
-		stack(const stack &x) : length(0)
-		{ *this = x; }
+		//Member function
+		explicit stack(const container_type &ctnr = container_type())
+		{ container = ctnr; }
 
-		stack &operator=(const stack &other)
-		{
-			defaultClass = other.defaultClass;
-			length = other.length;
-			return (*this);
-		}
-
-		virtual ~stack()
-		{}
-
-		//	Member functions
-		//	Test whether container is empty
 		bool empty() const
-		{ return (length == 0); }
+		{ return (container.empty()); }
 
-		//	Return size
 		size_type size() const
-		{ return (length); }
+		{ return (container.size()); }
 
-		//	Access next element
 		value_type &top()
-		{ return (defaultClass.back()); }
+		{ return (container.back()); }
 
 		const value_type &top() const
-		{ return (defaultClass.back()); }
+		{ return (container.back()); }
 
-		//	Insert element
 		void push(const value_type &val)
-		{
-			length++;
-			return (defaultClass.push_back(val));
-		}
+		{ container.push_back(val); }
 
-		//	Remove top element
 		void pop()
-		{
-			if (length)
-				length--;
-			return (defaultClass.pop_back());
-		}
+		{ container.pop_back(); }
 
-		friend bool operator==(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-		{
-			return (lhs.defaultClass == rhs.defaultClass);
-		}
+		friend bool operator==(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{ return (lhs.container == rhs.container); }
 
-		friend bool operator!=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-		{
-			return (lhs.defaultClass != rhs.defaultClass);
-		}
+		friend bool operator!=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{ return (lhs.container != rhs.container); }
 
-		friend bool operator<(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-		{
-			return (lhs.defaultClass < rhs.defaultClass);
-		}
+		friend bool operator<(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{ return (lhs.container < rhs.container); }
 
-		friend bool operator<=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-		{
-			return (lhs.defaultClass <= rhs.defaultClass);
-		}
+		friend bool operator>(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{ return (lhs.container > rhs.container); }
 
-		friend bool operator>(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-		{
-			return (lhs.defaultClass > rhs.defaultClass);
-		}
+		friend bool operator<=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{ return (lhs.container <= rhs.container); }
 
-		friend bool operator>=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-		{
-			return (lhs.defaultClass >= rhs.defaultClass);
-		}
+		friend bool operator>=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{ return (lhs.container >= rhs.container); }
 	};
 }
+
 
 #endif

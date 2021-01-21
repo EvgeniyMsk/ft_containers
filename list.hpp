@@ -43,7 +43,6 @@ namespace ft
 			_back = _end;
 		}
 
-		//  fill constructor. Constructs a container with n elements. Each element is a copy of val.
 		explicit list(const Alloc &alloc) : _length(0)
 		{
 			_end = _cellAlloc.allocate(1);
@@ -168,7 +167,7 @@ namespace ft
 
 		//	Return maximum size
 		size_type max_size() const
-		{ return (std::numeric_limits<size_type>::max()); };
+		{ return (std::numeric_limits<size_type>::max() / (sizeof(list_t<value_type>))); }
 
 		//  Element access:
 		//	Access first element
@@ -452,11 +451,15 @@ namespace ft
 		template<class Predicate>
 		void remove_if(Predicate pred)
 		{
-			for (iterator it = begin(); it != end();)
-				if (pred(*it))
-					erase(it);
+			iterator begin = this->begin();
+			iterator end = this->end();
+			while (begin != end)
+			{
+				if (pred(*begin))
+					begin = this->erase(begin);
 				else
-					it++;
+					++begin;
+			}
 		}
 
 		//	Remove duplicate values

@@ -9,103 +9,56 @@ namespace ft
 	class queue
 	{
 	public:
+		typedef T value_type;
 		typedef Container container_type;
-		typedef typename Container::value_type value_type;
-		typedef typename Container::size_type size_type;
-	private:
-		container_type defaultClass;
-		size_type length;
-	public:
-		//	Construct queue
-		explicit queue(const container_type &ctnr = container_type()) : defaultClass(ctnr), length(0)
-		{}
+		typedef size_t size_type;
+		container_type container;
 
-		//	Construct queue
-		queue(const queue &x) : length(0)
-		{ *this = x; }
+		//Member function
+		explicit queue(const container_type &ctnr = container_type())
+		{ container = ctnr; }
 
-		//	Assignation
-		queue &operator=(const queue &other)
-		{
-			defaultClass = other.defaultClass;
-			length = other._length;
-			return (*this);
-		}
-
-		//	Destructor
-		virtual ~queue()
-		{}
-
-		//	Member functions
-		//	Test whether container is empty
 		bool empty() const
-		{ return (length == 0); }
+		{ return (container.empty()); }
 
-		//	Return size
 		size_type size() const
-		{ return (length); }
+		{ return (container.size()); }
 
-		//	Access next element
 		value_type &front()
-		{ return (defaultClass.front()); }
+		{ return (container.front()); }
 
-		//	Access next element
 		const value_type &front() const
-		{ return (defaultClass.front()); }
+		{ return (container.front()); }
 
-		//	Access last element
 		value_type &back()
-		{ return (defaultClass.back()); }
+		{ return (container.back()); }
 
-		//	Access last element
 		const value_type &back() const
-		{ return (defaultClass.back()); }
+		{ return (container.back()); }
 
-		//	Insert element
 		void push(const value_type &val)
-		{
-			length++;
-			return (defaultClass.push_back(val));
-		}
+		{ container.push_back(val); }
 
-		//	Remove next element
 		void pop()
-		{
-			if (length)
-				length--;
-			return (defaultClass.pop_front());
-		}
+		{ container.pop_back(); }
 
-		//	Non-member function overloads
-		friend bool operator==(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-		{
-			return (lhs.defaultClass == rhs.defaultClass);
-		}
+		friend bool operator==(const queue<T, Container> &lhs, const queue<T, Container> &rhs)
+		{ return (lhs.container == rhs.container); }
 
-		friend bool operator!=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-		{
-			return (lhs.defaultClass != rhs.defaultClass);
-		}
+		friend bool operator!=(const queue<T, Container> &lhs, const queue<T, Container> &rhs)
+		{ return (lhs.container != rhs.container); }
 
-		friend bool operator<(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-		{
-			return (lhs.defaultClass < rhs.defaultClass);
-		}
+		friend bool operator<(const queue<T, Container> &lhs, const queue<T, Container> &rhs)
+		{ return (lhs.container < rhs.container); }
 
-		friend bool operator<=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-		{
-			return (lhs.defaultClass <= rhs.defaultClass);
-		}
+		friend bool operator>(const queue<T, Container> &lhs, const queue<T, Container> &rhs)
+		{ return (lhs.container > rhs.container); }
 
-		friend bool operator>(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-		{
-			return (lhs.defaultClass > rhs.defaultClass);
-		}
+		friend bool operator<=(const queue<T, Container> &lhs, const queue<T, Container> &rhs)
+		{ return (lhs.container <= rhs.container); }
 
-		friend bool operator>=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-		{
-			return (lhs.defaultClass >= rhs.defaultClass);
-		}
+		friend bool operator>=(const queue<T, Container> &lhs, const queue<T, Container> &rhs)
+		{ return (lhs.container >= rhs.container); }
 	};
 }
 

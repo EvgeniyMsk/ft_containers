@@ -136,7 +136,7 @@ namespace ft
 		{ return (_size); }
 
 		size_type max_size() const
-		{ return std::numeric_limits<size_type>::max(); }
+		{ return (std::numeric_limits<size_type>::max() / (2 * (sizeof(cell_t<key_type, size_type>) - sizeof(pointer)))); }
 
 		bool empty() const
 		{ return !_size ? 1 : 0; }
