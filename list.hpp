@@ -1,7 +1,6 @@
 #ifndef FT_LIST_HPP
 #define FT_LIST_HPP
 #include "utils.hpp"
-
 // Реализация двусвязного списка (в соответствии со стандартом C++98)
 // http://www.cplusplus.com/reference/list/list/list/
 namespace ft

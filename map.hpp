@@ -1,6 +1,8 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 #include "utils.hpp"
+// Реализация упорядоченного ассоциативного контейнера (в соответствии со стандартом C++98)
+// http://www.cplusplus.com/reference/map/map/
 namespace ft
 {
 	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key, T> > >
@@ -35,10 +37,8 @@ namespace ft
 
 		protected:
 			Cmp comp;
-
 			value_cmp(Cmp c) : comp(c)
 			{}
-
 		public:
 			typedef bool result_type;
 			typedef std::pair<const Key, T> first_argument_type;
@@ -53,6 +53,7 @@ namespace ft
 	public:
 		typedef value_cmp<key_compare> value_compare;
 
+		//	Member functions
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) :
 				cell(alloc), _alloc(alloc), _key_compare(comp)
 		{
@@ -92,6 +93,8 @@ namespace ft
 		virtual ~map()
 		{};
 
+		//	Iterators
+		//	Return iterator to beginning
 		iterator begin()
 		{
 			if (!_size)
@@ -99,6 +102,7 @@ namespace ft
 			return iterator(cell.cell_min());
 		}
 
+		//	Return iterator to beginning
 		const_iterator begin() const
 		{
 			if (!_size)
@@ -106,12 +110,15 @@ namespace ft
 			return const_iterator(cell.cell_min());
 		}
 
+		//	Return iterator to end
 		iterator end()
 		{ return iterator(cell.getend()); }
 
+		//	Return iterator to end
 		const_iterator end() const
 		{ return const_iterator(cell.getend()); }
 
+		//	Return reverse iterator to reverse beginning
 		reverse_iterator rbegin()
 		{
 			if (!_size)
@@ -119,6 +126,7 @@ namespace ft
 			return reverse_iterator(cell.cell_max());
 		}
 
+		//	Return reverse iterator to reverse beginning
 		const_reverse_iterator rbegin() const
 		{
 			if (!_size)
@@ -126,21 +134,31 @@ namespace ft
 			return reverse_iterator(cell.cell_max());
 		}
 
+		//	Return reverse iterator to reverse end
 		reverse_iterator rend()
 		{ return reverse_iterator(cell.getRend()); }
 
+		//	Return reverse iterator to reverse end
 		const_reverse_iterator rend() const
 		{ return const_reverse_iterator(cell.getRend()); }
 
-		size_type size() const
-		{ return (_size); }
-
-		size_type max_size() const
-		{ return (std::numeric_limits<size_type>::max() / (2 * (sizeof(cell_t<key_type, size_type>) - sizeof(pointer)))); }
-
+		//	Test whether container is empty
 		bool empty() const
 		{ return !_size ? 1 : 0; }
 
+		//	Return container size
+		size_type size() const
+		{ return (_size); }
+
+		//	Return maximum size
+		size_type max_size() const
+		{
+			return (std::numeric_limits<size_type>::max() /
+					(2 * (sizeof(cell_t<key_type, size_type>) - sizeof(pointer))));
+		}
+
+		//	Element access:
+		//	Access element
 		mapped_type &operator[](const key_type &k)
 		{
 			cell_t<Key, T> *tmp = cell.cell_search(k);
@@ -152,6 +170,8 @@ namespace ft
 			return (tmp->value->second);
 		}
 
+		//	Modifiers:
+		//	Insert elements
 		std::pair<iterator, bool> insert(const value_type &val)
 		{
 			if (!cell.cell_search(val))
@@ -162,6 +182,7 @@ namespace ft
 			return (std::pair<iterator, bool>(iterator(cell.cell_search(val)), false));
 		}
 
+		//	Insert elements
 		iterator insert(iterator hint, const value_type &val)
 		{
 			(void) hint;
@@ -173,9 +194,9 @@ namespace ft
 			return (iterator(cell.cell_search(val)));
 		}
 
+		//	Insert elements
 		template<class InputIterator>
-		void
-		insert(InputIterator first, typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last)
+		void insert(InputIterator first, typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last)
 		{
 			while (first != last)
 			{
@@ -184,6 +205,7 @@ namespace ft
 			}
 		}
 
+		//	Erase elements
 		void erase(iterator position)
 		{
 			if (_size)
@@ -195,6 +217,7 @@ namespace ft
 			}
 		}
 
+		//	Erase elements
 		size_type erase(const key_type &k)
 		{
 			cell_t<Key, T> *tmp = cell.cell_search(k);
@@ -209,6 +232,7 @@ namespace ft
 			return (0);
 		}
 
+		//	Erase elements
 		void erase(iterator first, iterator last)
 		{
 			iterator tmp = first;
@@ -221,6 +245,7 @@ namespace ft
 			}
 		}
 
+		//	Swap content
 		void swap(map &x)
 		{
 			cell_t<Key, T> *base;
@@ -241,22 +266,28 @@ namespace ft
 			x._key_compare = key;
 		}
 
+		//	Clear content
 		void clear()
 		{
 			_size = 0;
 			cell.cell_clear();
 		}
 
+		//	Observers:
+		//	Return key comparison object
 		key_compare key_comp() const
 		{
 			return (_key_compare);
 		}
 
+		//	Return value comparison object
 		value_compare value_comp() const
 		{
 			return (value_compare(_key_compare));
 		}
 
+		//	Operations:
+		//	Get iterator to element
 		iterator find(const key_type &k)
 		{
 			cell_t<Key, T> *tmp = cell.cell_search(k);
@@ -265,6 +296,7 @@ namespace ft
 			return (iterator(tmp));
 		}
 
+		//	Get iterator to element
 		const_iterator find(const key_type &k) const
 		{
 			cell_t<Key, T> *tmp;
@@ -274,6 +306,7 @@ namespace ft
 			return (const_iterator(tmp));
 		}
 
+		//	Count elements with a specific key
 		size_type count(const key_type &k) const
 		{
 			if (cell.cell_search(k))
@@ -281,6 +314,7 @@ namespace ft
 			return (0);
 		}
 
+		//	Return iterator to lower bound
 		iterator lower_bound(const key_type &k)
 		{
 			cell_t<Key, T> *tmp = cell.cell_search(k);
@@ -297,6 +331,7 @@ namespace ft
 			return (iterator(cell.getBase()));
 		}
 
+		//	Return iterator to lower bound
 		const_iterator lower_bound(const key_type &k) const
 		{
 			cell_t<Key, T> *tmp = cell.cell_search(k);
@@ -313,6 +348,7 @@ namespace ft
 			return (const_iterator(cell.getBase()));
 		}
 
+		//	Return iterator to upper bound
 		iterator upper_bound(const key_type &k)
 		{
 			iterator begin = this->begin();
@@ -326,6 +362,7 @@ namespace ft
 			return (begin);
 		}
 
+		//	Return iterator to upper bound
 		const_iterator upper_bound(const key_type &k) const
 		{
 			const_iterator begin = this->begin();
@@ -339,11 +376,13 @@ namespace ft
 			return (begin);
 		}
 
+		//	Get range of equal elements
 		std::pair<iterator, iterator> equal_range(const key_type &k)
 		{
 			return (std::pair<iterator, iterator>(lower_bound(k), upper_bound(k)));
 		}
 
+		//	Get range of equal elements
 		std::pair<const_iterator, const_iterator> equal_range(const key_type &k) const
 		{
 			return (std::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));

@@ -1,7 +1,6 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 #include "vector.hpp"
-
 // Реализация стека (в соответствии со стандартом C++98)
 // http://www.cplusplus.com/reference/stack/stack/
 namespace ft
