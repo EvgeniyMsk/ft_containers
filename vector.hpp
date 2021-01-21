@@ -1,0 +1,8 @@
+//
+// Created by Qsymond on 2021-01-19.
+//
+
+#ifndef FT_CONTAINERS_VECTOR_HPP
+#define FT_CONTAINERS_VECTOR_HPP
+
+#endif //FT_CONTAINERS_VECTOR_HPP

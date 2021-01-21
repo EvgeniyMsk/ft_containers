@@ -5,10 +5,7 @@
 #ifndef FT_CONTAINERS_LIST_HPP
 #define FT_CONTAINERS_LIST_HPP
 
-#include "bidirectional_iterator.hpp"
-#include "const_bidirectional_iterator.hpp"
-#include "reverse_iterator.hpp"
-#include "const_reverse_iterator.hpp"
+#include "utils.hpp"
 #include <limits>
 
 
@@ -17,10 +14,6 @@
 using namespace ft;
 namespace ft
 {
-	template<bool B, class T = void>
-	struct enable_if {};
-	template<class T>
-	struct enable_if<true, T> {typedef T type;};
 	template<typename T, class Alloc = std::allocator<T> >
 	class list
 	{
@@ -383,17 +376,14 @@ namespace ft
 		//	Change size
 		void resize(size_type n, value_type val = value_type())
 		{
-			int temp = (int) n;
-			if (temp < 0)
-				return;
-			if (temp < _length)
+			if (n < _length)
 			{
-				while (temp < _length)
+				while (n < _length)
 					pop_back();
 				return;
 			}
-			if (temp > _length)
-				while (temp > _length)
+			if (n > _length)
+				while (n > _length)
 					push_back(val);
 		}
 
