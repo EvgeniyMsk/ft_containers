@@ -16,10 +16,10 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef typename ft::map_iterator<Key, T, Compare> iterator;
-		typedef typename ft::const_map_iterator<Key, T, Compare> const_iterator;
-		typedef typename ft::reverse_map_iterator<Key, T, Compare> reverse_iterator;
-		typedef typename ft::const_reverse_map_iterator<Key, T, Compare> const_reverse_iterator;
+		typedef map_iterator<Key, T, Compare> iterator;
+		typedef const_map_iterator<Key, T, Compare> const_iterator;
+		typedef reverse_map_iterator<Key, T, Compare> reverse_iterator;
+		typedef const_reverse_map_iterator<Key, T, Compare> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
 		typedef std::size_t size_type;
 	private :
@@ -348,88 +348,81 @@ namespace ft
 		{
 			return (std::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
 		}
+
+		friend bool operator==(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+
+			if (lhs.size() != rhs.size())
+				return (false);
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator beginLhs = lhs.begin();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator begRhs = rhs.begin();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator endLhs = lhs.end();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator endRhs = rhs.end();
+			while (beginLhs != endLhs && begRhs != endRhs && *beginLhs == *begRhs)
+			{
+				beginLhs++;
+				begRhs++;
+			}
+			return beginLhs == endLhs && begRhs == endRhs;
+		}
+
+		friend bool operator!=(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+			return (!(lhs == rhs));
+		}
+
+		friend bool operator<(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+
+			if (lhs.size() < rhs.size())
+				return (true);
+			if (lhs.size() > rhs.size())
+				return (false);
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator beginLhs = lhs.begin();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator begRhs = rhs.begin();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator endLhs = lhs.end();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator endRhs = rhs.end();
+
+			while (beginLhs != endLhs && begRhs != endRhs && *beginLhs == *begRhs)
+			{
+				beginLhs++;
+				begRhs++;
+			}
+			return !((beginLhs == endLhs && begRhs == endRhs) || begRhs == endRhs || *beginLhs >= *begRhs);
+		}
+
+		friend bool operator<=(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+			return (lhs < rhs || lhs == rhs);
+		}
+
+		friend bool operator>(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+			if (lhs.size() > rhs.size())
+				return (true);
+			if (lhs.size() < rhs.size())
+				return (false);
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator beginLhs = lhs.begin();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator begRhs = rhs.begin();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator endLhs = lhs.end();
+			typename ft::map<Key, T, Compare, Alloc>::const_iterator endRhs = rhs.end();
+			while (beginLhs != endLhs && begRhs != endRhs && *beginLhs == *begRhs)
+			{
+				beginLhs++;
+				begRhs++;
+			}
+			return !((beginLhs == endLhs && begRhs == endRhs) || beginLhs == endLhs || *beginLhs <= *begRhs);
+		}
+
+		friend bool operator>=(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+			return (lhs > rhs || lhs == rhs);
+		}
+
+		void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs)
+		{
+			lhs.swap(rhs);
+		}
 	};
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool operator==(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-
-		if (lhs.size() != rhs.size())
-			return (false);
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator beginLhs = lhs.begin();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator begRhs = rhs.begin();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator endLhs = lhs.end();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator endRhs = rhs.end();
-		while (beginLhs != endLhs && begRhs != endRhs && *beginLhs == *begRhs)
-		{
-			beginLhs++;
-			begRhs++;
-		}
-		return beginLhs == endLhs && begRhs == endRhs;
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool operator!=(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-		return (!(lhs == rhs));
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool operator<(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-
-		if (lhs.size() < rhs.size())
-			return (true);
-		if (lhs.size() > rhs.size())
-			return (false);
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator beginLhs = lhs.begin();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator begRhs = rhs.begin();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator endLhs = lhs.end();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator endRhs = rhs.end();
-
-		while (beginLhs != endLhs && begRhs != endRhs && *beginLhs == *begRhs)
-		{
-			beginLhs++;
-			begRhs++;
-		}
-		return !((beginLhs == endLhs && begRhs == endRhs) || begRhs == endRhs || *beginLhs >= *begRhs);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool operator<=(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-		return (lhs < rhs || lhs == rhs);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool operator>(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-		if (lhs.size() > rhs.size())
-			return (true);
-		if (lhs.size() < rhs.size())
-			return (false);
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator beginLhs = lhs.begin();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator begRhs = rhs.begin();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator endLhs = lhs.end();
-		typename ft::map<Key, T, Compare, Alloc>::const_iterator endRhs = rhs.end();
-		while (beginLhs != endLhs && begRhs != endRhs && *beginLhs == *begRhs)
-		{
-			beginLhs++;
-			begRhs++;
-		}
-		return !((beginLhs == endLhs && begRhs == endRhs) || beginLhs == endLhs || *beginLhs <= *begRhs);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool operator>=(const ft::map<Key, T, Compare, Alloc> &lhs, const ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-		return (lhs > rhs || lhs == rhs);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void swap(ft::map<Key, T, Compare, Alloc> &lhs, ft::map<Key, T, Compare, Alloc> &rhs)
-	{
-		lhs.swap(rhs);
-	}
 }
 #endif

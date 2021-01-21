@@ -13,7 +13,7 @@ namespace ft
 		typedef Container container_type;
 		typedef typename Container::value_type value_type;
 		typedef typename Container::size_type size_type;
-	private:
+	protected:
 		container_type defaultClass;
 		size_type length;
 	public:
@@ -26,7 +26,7 @@ namespace ft
 		stack &operator=(const stack &other)
 		{
 			defaultClass = other.defaultClass;
-			length = other._length;
+			length = other.length;
 			return (*this);
 		}
 
@@ -63,43 +63,37 @@ namespace ft
 				length--;
 			return (defaultClass.pop_back());
 		}
+
+		friend bool operator==(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+		{
+			return (lhs.defaultClass == rhs.defaultClass);
+		}
+
+		friend bool operator!=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+		{
+			return (lhs.defaultClass != rhs.defaultClass);
+		}
+
+		friend bool operator<(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+		{
+			return (lhs.defaultClass < rhs.defaultClass);
+		}
+
+		friend bool operator<=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+		{
+			return (lhs.defaultClass <= rhs.defaultClass);
+		}
+
+		friend bool operator>(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+		{
+			return (lhs.defaultClass > rhs.defaultClass);
+		}
+
+		friend bool operator>=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+		{
+			return (lhs.defaultClass >= rhs.defaultClass);
+		}
 	};
-}
-
-template <class T, class Container>
-bool operator==(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-{
-	return (lhs.defaultClass == rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator!=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-{
-	return (lhs.defaultClass != rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator<(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-{
-	return (lhs.defaultClass < rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator<=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-{
-	return (lhs.defaultClass <= rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator>(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-{
-	return (lhs.defaultClass > rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator>=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
-{
-	return (lhs.defaultClass >= rhs.defaultClass);
 }
 
 #endif

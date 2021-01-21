@@ -1,7 +1,7 @@
 #ifndef FT_LIST_HPP
 #define FT_LIST_HPP
 #include "utils.hpp"
-#include <limits>
+
 // Реализация двусвязного списка (в соответствии со стандартом C++98)
 // http://www.cplusplus.com/reference/list/list/list/
 namespace ft
@@ -191,7 +191,8 @@ namespace ft
 		template<class InputIterator>
 
 		//	Assign new content to container
-		void assign(InputIterator first, typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last)
+		void
+		assign(InputIterator first, typename enable_if<std::is_class<InputIterator>::value, InputIterator>::type last)
 		{
 			clear();
 			while (first != last)
@@ -588,74 +589,68 @@ namespace ft
 			while ((first != last) && (first != --last))
 				std::swap(*first++, *last);
 		}
+
+
+		//	Exchanges the contents of two lists
+		friend void swap(list<T, Alloc> &x, list<T, Alloc> &y)
+		{
+			x.swap(y);
+		}
+
+		//	Non-member function overloads. Relational operators for list.
+		friend bool operator==(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
+		{
+			if (lhs.size() != rhs.size())
+				return (false);
+			const_bidirectional_iterator<T> beginLhs = lhs.begin();
+			const_bidirectional_iterator<T> beginRhs = rhs.begin();
+			const_bidirectional_iterator<T> endLhs = lhs.end();
+			const_bidirectional_iterator<T> endRhs = rhs.end();
+			while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
+			{
+				beginLhs++;
+				beginRhs++;
+			}
+			return beginLhs == endLhs && beginRhs == endRhs;
+		}
+
+		friend bool operator!=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
+		{
+			return (!(lhs == rhs));
+		}
+
+		friend bool operator<(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
+		{
+			if (lhs.size() < rhs.size())
+				return (true);
+			if (lhs.size() > rhs.size())
+				return (false);
+			const_bidirectional_iterator<T> beginLhs = lhs.begin();
+			const_bidirectional_iterator<T> beginRhs = rhs.begin();
+			const_bidirectional_iterator<T> endLhs = lhs.end();
+			const_bidirectional_iterator<T> endRhs = rhs.end();
+			while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
+			{
+				beginLhs++;
+				beginRhs++;
+			}
+			return !((beginLhs == endLhs && beginRhs == endRhs) || beginRhs == endRhs || *beginLhs >= *beginRhs);
+		}
+
+		friend bool operator<=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
+		{
+			return (lhs < rhs || lhs == rhs);
+		}
+
+		friend bool operator>(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
+		{
+			return !((lhs < rhs) || (lhs == rhs));
+		}
+
+		friend bool operator>=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
+		{
+			return ((lhs > rhs) || (lhs == rhs));
+		}
 	};
-
-	//	Exchanges the contents of two lists
-	template<class T, class Alloc>
-	void swap(list<T, Alloc> &x, list<T, Alloc> &y)
-	{
-		x.swap(y);
-	}
-
-	//	Non-member function overloads. Relational operators for list.
-	template<class T, class Alloc>
-	bool operator==(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-		if (lhs.size() != rhs.size())
-			return (false);
-		ft::const_bidirectional_iterator<T> beginLhs = lhs.begin();
-		ft::const_bidirectional_iterator<T> beginRhs = rhs.begin();
-		ft::const_bidirectional_iterator<T> endLhs = lhs.end();
-		ft::const_bidirectional_iterator<T> endRhs = rhs.end();
-		while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
-		{
-			beginLhs++;
-			beginRhs++;
-		}
-		return beginLhs == endLhs && beginRhs == endRhs;
-	}
-
-	template<class T, class Alloc>
-	bool operator!=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-		return (!(lhs == rhs));
-	}
-
-	template<class T, class Alloc>
-	bool operator<(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-		if (lhs.size() < rhs.size())
-			return (true);
-		if (lhs.size() > rhs.size())
-			return (false);
-		ft::const_bidirectional_iterator<T> beginLhs = lhs.begin();
-		ft::const_bidirectional_iterator<T> beginRhs = rhs.begin();
-		ft::const_bidirectional_iterator<T> endLhs = lhs.end();
-		ft::const_bidirectional_iterator<T> endRhs = rhs.end();
-		while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
-		{
-			beginLhs++;
-			beginRhs++;
-		}
-		return !((beginLhs == endLhs && beginRhs == endRhs) || beginRhs == endRhs || *beginLhs >= *beginRhs);
-	}
-
-	template<class T, class Alloc>
-	bool operator<=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-		return (lhs < rhs || lhs == rhs);
-	}
-
-	template<class T, class Alloc>
-	bool operator>(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-		return !((lhs < rhs) || (lhs == rhs));
-	}
-
-	template<class T, class Alloc>
-	bool operator>=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs)
-	{
-		return ((lhs > rhs) || (lhs == rhs));
-	}
 }
 #endif

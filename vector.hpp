@@ -17,10 +17,10 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef typename ft::random_access_iterator<T> iterator;
-		typedef typename ft::const_random_access_iterator<T> const_iterator;
-		typedef typename ft::reverse_random_access_iterator<T> reverse_iterator;
-		typedef typename ft::const_reverse_random_access_iterator<T> const_reverse_iterator;
+		typedef random_access_iterator<T> iterator;
+		typedef const_random_access_iterator<T> const_iterator;
+		typedef reverse_random_access_iterator<T> reverse_iterator;
+		typedef const_reverse_random_access_iterator<T> const_reverse_iterator;
 	private:
 		value_type *ptr;
 		size_type length;
@@ -390,90 +390,82 @@ namespace ft
 			length = 0;
 			realLength = 0;
 		}
+
+		friend void swap(ft::vector<T, Alloc> &lhs, ft::vector<T, Alloc> &rhs)
+		{
+			lhs.swap(rhs);
+		}
+
+		friend bool operator==(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			if (lhs.size() != rhs.size())
+				return (false);
+			if (lhs.size() == 0 && rhs.size() == 0)
+				return (true);
+			typename ft::vector<T>::const_iterator beginLhs = lhs.begin();
+			typename ft::vector<T>::const_iterator beginRhs = rhs.begin();
+			typename ft::vector<T>::const_iterator endLhs = lhs.end();
+			typename ft::vector<T>::const_iterator endRhs = rhs.end();
+			while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
+			{
+				beginLhs++;
+				beginRhs++;
+			}
+			return beginLhs == endLhs && beginRhs == endRhs;
+		}
+
+		friend bool operator!=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (!(lhs == rhs));
+		}
+
+		friend bool operator<(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			if (lhs.size() < rhs.size())
+				return (true);
+			if (lhs.size() > rhs.size() || (lhs.size() == 0 && rhs.size() == 0))
+				return (false);
+			typename ft::vector<T>::const_iterator beginLhs = lhs.begin();
+			typename ft::vector<T>::const_iterator beginRhs = rhs.begin();
+			typename ft::vector<T>::const_iterator endLhs = lhs.end();
+			typename ft::vector<T>::const_iterator endRhs = rhs.end();
+
+			while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
+			{
+				beginLhs++;
+				beginRhs++;
+			}
+			return !((beginLhs == endLhs && beginRhs == endRhs) || beginRhs == endRhs || *beginLhs >= *beginRhs);
+		}
+
+		friend bool operator<=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (lhs < rhs || lhs == rhs);
+		}
+
+		friend bool operator>(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs){
+			if (lhs.size() > rhs.size())
+				return (true);
+			if (lhs.size() < rhs.size() || (lhs.size() == 0 && rhs.size() == 0))
+				return (false);
+			typename ft::vector<T>::const_iterator beginLhs = lhs.begin();
+			typename ft::vector<T>::const_iterator  beginRhs = rhs.begin();
+			typename ft::vector<T>::const_iterator  endLhs = lhs.end();
+			typename ft::vector<T>::const_iterator  endRhs = rhs.end();
+
+			while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
+			{
+				beginLhs++;
+				beginRhs++;
+			}
+			return !((beginLhs == endLhs && beginRhs == endRhs) || beginLhs == endLhs || *beginLhs <= *beginRhs);
+		}
+
+		friend bool operator>=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (lhs > rhs || lhs == rhs);
+		}
 	};
-
-	//	Exchange contents of vectors
-	template<class T, class Alloc>
-	void swap(ft::vector<T, Alloc> &lhs, ft::vector<T, Alloc> &rhs)
-	{
-		lhs.swap(rhs);
-	}
-}
-//	Non-member function overloads
-template <class T, class Alloc>
-bool operator==(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
-{
-	if (lhs.size() != rhs.size())
-		return (false);
-	if (lhs.size() == 0 && rhs.size() == 0)
-		return (true);
-	typename ft::vector<T>::const_iterator beginLhs = lhs.begin();
-	typename ft::vector<T>::const_iterator beginRhs = rhs.begin();
-	typename ft::vector<T>::const_iterator endLhs = lhs.end();
-	typename ft::vector<T>::const_iterator endRhs = rhs.end();
-	while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
-	{
-		beginLhs++;
-		beginRhs++;
-	}
-	return beginLhs == endLhs && beginRhs == endRhs;
-}
-
-template <class T, class Alloc>
-bool operator!=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
-{
-	return (!(lhs == rhs));
-}
-
-template <class T, class Alloc>
-bool operator<(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
-{
-	if (lhs.size() < rhs.size())
-		return (true);
-	if (lhs.size() > rhs.size() || (lhs.size() == 0 && rhs.size() == 0))
-		return (false);
-	typename ft::vector<T>::const_iterator beginLhs = lhs.begin();
-	typename ft::vector<T>::const_iterator beginRhs = rhs.begin();
-	typename ft::vector<T>::const_iterator endLhs = lhs.end();
-	typename ft::vector<T>::const_iterator endRhs = rhs.end();
-
-	while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
-	{
-		beginLhs++;
-		beginRhs++;
-	}
-	return !((beginLhs == endLhs && beginRhs == endRhs) || beginRhs == endRhs || *beginLhs >= *beginRhs);
-}
-
-template <class T, class Alloc>
-bool operator<=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
-{
-	return (lhs < rhs || lhs == rhs);
-}
-
-template <class T, class Alloc>
-bool operator>(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs){
-	if (lhs.size() > rhs.size())
-		return (true);
-	if (lhs.size() < rhs.size() || (lhs.size() == 0 && rhs.size() == 0))
-		return (false);
-	typename ft::vector<T>::const_iterator beginLhs = lhs.begin();
-	typename ft::vector<T>::const_iterator  beginRhs = rhs.begin();
-	typename ft::vector<T>::const_iterator  endLhs = lhs.end();
-	typename ft::vector<T>::const_iterator  endRhs = rhs.end();
-
-	while (beginLhs != endLhs && beginRhs != endRhs && *beginLhs == *beginRhs)
-	{
-		beginLhs++;
-		beginRhs++;
-	}
-	return !((beginLhs == endLhs && beginRhs == endRhs) || beginLhs == endLhs || *beginLhs <= *beginRhs);
-}
-
-template <class T, class Alloc>
-bool operator>=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
-{
-	return (lhs > rhs || lhs == rhs);
 }
 
 #endif

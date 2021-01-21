@@ -5,24 +5,12 @@
 #include <iostream>
 #include <limits>
 
-namespace ft
-{
 	template<typename T>
 	struct list_t
 	{
 		T *data;
 		struct list_t *next;
 		struct list_t *previous;
-	};
-
-	template<bool B, class T = void>
-	struct enable_if
-	{
-	};
-	template<class T>
-	struct enable_if<true, T>
-	{
-		typedef T type;
 	};
 
 	template<class Key_type, class Value_type>
@@ -47,10 +35,12 @@ namespace ft
 		explicit bidirectional_iterator() : _ptr(nullptr)
 		{}
 
-		explicit bidirectional_iterator(list_t<T> *ptr) : _ptr(ptr)
+		explicit bidirectional_iterator(list_t<T>
+										*ptr) : _ptr(ptr)
 		{}
 
-		bidirectional_iterator(bidirectional_iterator const &bidirectionalIterator) : _ptr(bidirectionalIterator._ptr)
+		bidirectional_iterator(bidirectional_iterator const &bidirectionalIterator) : _ptr(
+				bidirectionalIterator._ptr)
 		{}
 
 		bidirectional_iterator &operator=(bidirectional_iterator const &bidirectionalIterator)
@@ -126,7 +116,8 @@ namespace ft
 		explicit const_bidirectional_iterator() : _ptr(nullptr)
 		{};
 
-		explicit const_bidirectional_iterator(list_t<T> *ptr) : _ptr(ptr)
+		explicit const_bidirectional_iterator(list_t<T>
+											  *ptr) : _ptr(ptr)
 		{};
 
 		const_bidirectional_iterator(const_bidirectional_iterator const &constBidirectionalIterator) :
@@ -211,7 +202,8 @@ namespace ft
 		explicit reverse_iterator() : _ptr(nullptr)
 		{}
 
-		explicit reverse_iterator(list_t<T> *ptr) : _ptr(ptr)
+		explicit reverse_iterator(list_t<T>
+								  *ptr) : _ptr(ptr)
 		{}
 
 		reverse_iterator(reverse_iterator const &reverseIterator) : _ptr(reverseIterator._ptr)
@@ -282,7 +274,8 @@ namespace ft
 		explicit const_reverse_iterator() : _ptr(nullptr)
 		{}
 
-		explicit const_reverse_iterator(list_t<T> *ptr) : _ptr(ptr)
+		explicit const_reverse_iterator(list_t<T>
+										*ptr) : _ptr(ptr)
 		{}
 
 		const_reverse_iterator(const_reverse_iterator const &constReverseIterator) : _ptr(constReverseIterator._ptr)
@@ -370,7 +363,8 @@ namespace ft
 		random_access_iterator(T *p) : ptr(p)
 		{}
 
-		random_access_iterator(const random_access_iterator &randomAccessIterator)
+		random_access_iterator(
+				const random_access_iterator &randomAccessIterator)
 		{ *this = randomAccessIterator; }
 
 		random_access_iterator &operator=(const random_access_iterator &iter)
@@ -470,13 +464,16 @@ namespace ft
 		const_random_access_iterator() : ptr(nullptr)
 		{}
 
-		explicit const_random_access_iterator(T *p) : ptr(p)
+		explicit const_random_access_iterator(T
+											  *p) : ptr(p)
 		{}
 
-		const_random_access_iterator(const const_random_access_iterator &constRandomAccessIterator)
+		const_random_access_iterator(
+				const const_random_access_iterator &constRandomAccessIterator)
 		{ *this = constRandomAccessIterator; }
 
-		const_random_access_iterator(const random_access_iterator<T> &randomAccessIterator)
+		const_random_access_iterator(
+				const random_access_iterator<T> &randomAccessIterator)
 		{ *this = randomAccessIterator; }
 
 		const_random_access_iterator &operator=(const const_random_access_iterator &constRandomAccessIterator)
@@ -584,7 +581,8 @@ namespace ft
 		reverse_random_access_iterator(T *p) : ptr(p)
 		{}
 
-		reverse_random_access_iterator(const reverse_random_access_iterator &reverseRandomAccessIterator)
+		reverse_random_access_iterator(
+				const reverse_random_access_iterator &reverseRandomAccessIterator)
 		{ *this = reverseRandomAccessIterator; }
 
 		reverse_random_access_iterator &operator=(const reverse_random_access_iterator &reverseRandomAccessIterator)
@@ -694,7 +692,8 @@ namespace ft
 				const const_reverse_random_access_iterator &constReverseRandomAccessIterator)
 		{ *this = constReverseRandomAccessIterator; }
 
-		const_reverse_random_access_iterator(const reverse_random_access_iterator<T> &reverseRandomAccessIterator)
+		const_reverse_random_access_iterator(
+				const reverse_random_access_iterator<T> &reverseRandomAccessIterator)
 		{ *this = reverseRandomAccessIterator; }
 
 		const_reverse_random_access_iterator &
@@ -790,7 +789,7 @@ namespace ft
 	class Cell
 	{
 	public:
-		typedef ft::cell_t<Key, T> _self;
+		typedef cell_t<Key, T> _self;
 		typedef Key key_type;
 		typedef T mapped_type;
 		typedef Alloc allocator_type;
@@ -814,7 +813,8 @@ namespace ft
 			_base = nullptr;
 		}
 
-		Cell(const allocator_type &alloc)
+		Cell(
+				const allocator_type &alloc)
 		{
 			_alloc = alloc;
 			_end = endCell(nullptr);
@@ -970,12 +970,12 @@ namespace ft
 		pointer cell_search(key_type key, pointer root = nullptr, bool fst = false) const
 		{
 			if (!fst)
-				root = this->_base;
+				root = _base;
 			if (root == nullptr || root->end)
 				return (nullptr);
 			if (key == root->value->first)
 				return (root);
-			if (this->_cmp(key, root->value->first))
+			if (_cmp(key, root->value->first))
 				return (cell_search(key, root->previous, true));
 			else
 				return (cell_search(key, root->next, true));
@@ -1150,7 +1150,8 @@ namespace ft
 		map_iterator(cell_t<Key, T> *p) : ptr(p)
 		{}
 
-		map_iterator(const map_iterator &iter)
+		map_iterator(
+				const map_iterator &iter)
 		{ *this = iter; }
 
 		map_iterator &operator=(const map_iterator &mapIterator)
@@ -1233,10 +1234,12 @@ namespace ft
 		const_map_iterator(cell_t<Key, T> *p) : ptr(p)
 		{}
 
-		const_map_iterator(const const_map_iterator &constMapIterator)
+		const_map_iterator(
+				const const_map_iterator &constMapIterator)
 		{ *this = constMapIterator; }
 
-		const_map_iterator(const map_iterator<Key, T, Compare> &mapIterator)
+		const_map_iterator(
+				const map_iterator<Key, T, Compare> &mapIterator)
 		{ *this = mapIterator; }
 
 		const_map_iterator &operator=(const const_map_iterator &constMapIterator)
@@ -1316,7 +1319,8 @@ namespace ft
 		reverse_map_iterator(cell_t<Key, T> *p) : ptr(p)
 		{};
 
-		reverse_map_iterator(const reverse_map_iterator &iter)
+		reverse_map_iterator(
+				const reverse_map_iterator &iter)
 		{
 			*this = iter;
 		}
@@ -1392,12 +1396,14 @@ namespace ft
 		const_reverse_map_iterator(cell_t<Key, T> *p) : ptr(p)
 		{};
 
-		const_reverse_map_iterator(const const_reverse_map_iterator &constReverseMapIterator)
+		const_reverse_map_iterator(
+				const const_reverse_map_iterator &constReverseMapIterator)
 		{
 			*this = constReverseMapIterator;
 		}
 
-		const_reverse_map_iterator(const reverse_map_iterator<Key, T, Compare> &reverseMapIterator)
+		const_reverse_map_iterator(
+				const reverse_map_iterator<Key, T, Compare> &reverseMapIterator)
 		{
 			*this = reverseMapIterator;
 		}
@@ -1463,6 +1469,15 @@ namespace ft
 			return (ptr->value);
 		}
 	};
-}
+
+template<bool B, class T = void>
+struct enable_if
+{
+};
+template<class T>
+struct enable_if<true, T>
+{
+	typedef T type;
+};
 
 #endif

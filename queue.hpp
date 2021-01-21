@@ -76,44 +76,37 @@ namespace ft
 			return (defaultClass.pop_front());
 		}
 
+		//	Non-member function overloads
+		friend bool operator==(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
+		{
+			return (lhs.defaultClass == rhs.defaultClass);
+		}
+
+		friend bool operator!=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
+		{
+			return (lhs.defaultClass != rhs.defaultClass);
+		}
+
+		friend bool operator<(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
+		{
+			return (lhs.defaultClass < rhs.defaultClass);
+		}
+
+		friend bool operator<=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
+		{
+			return (lhs.defaultClass <= rhs.defaultClass);
+		}
+
+		friend bool operator>(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
+		{
+			return (lhs.defaultClass > rhs.defaultClass);
+		}
+
+		friend bool operator>=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
+		{
+			return (lhs.defaultClass >= rhs.defaultClass);
+		}
 	};
-}
-
-//	Non-member function overloads
-template <class T, class Container>
-bool operator==(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-{
-	return (lhs.defaultClass == rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator!=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-{
-	return (lhs.defaultClass != rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator<(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-{
-	return (lhs.defaultClass < rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator<=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-{
-	return (lhs.defaultClass <= rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator>(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-{
-	return (lhs.defaultClass > rhs.defaultClass);
-}
-
-template <class T, class Container>
-bool operator>=(const ft::queue<T, Container> &lhs, const ft::queue<T, Container> &rhs)
-{
-	return (lhs.defaultClass >= rhs.defaultClass);
 }
 
 #endif
